@@ -7,7 +7,9 @@
       <span>Completed {{ numberOfCompleted }}</span> /
       {{ totalNumberOfTodos }}
     </span>
-    <button class="btn btn-danger" @click="clearAll">Clear All Completed Todos</button>
+    <button class="btn btn-danger" @click="clearAll">
+      Clear All Completed Todos
+    </button>
   </div>
 </template>
 
@@ -36,11 +38,17 @@ export default {
       },
       // check or discheck all box when this total box is checked
       set(value) {
-        this.checkAll(value);
+        this.$emit("checkAll", value);
       },
     },
+    // activate the clearAll events
   },
-  props: ["todos", "checkAll", "clearAll"],
+  methods: {
+    clearAll() {
+      this.$emit("clearAll");
+    },
+  },
+  props: ["todos"],
 };
 </script>
 

@@ -33,7 +33,7 @@ export default {
         };
 
         // send to App.vue
-        this.receive(newTodo);
+        this.$emit("receive", newTodo);
         // clear input box
         this.input = "";
       } else {
@@ -44,7 +44,6 @@ export default {
       }
     },
   },
-  props: ["receive"],
 };
 </script>
 

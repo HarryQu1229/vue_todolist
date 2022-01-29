@@ -3,7 +3,7 @@
     <div id="root">
       <div class="todo-container">
         <div class="todo-wrap">
-          <TodoHeader :receive="receive"></TodoHeader>
+          <TodoHeader @receive="receive"></TodoHeader>
           <TodoList
             :todos="todos"
             :checkTodo="checkTodo"
@@ -11,8 +11,8 @@
           ></TodoList>
           <TodoFooter
             :todos="todos"
-            :checkAll="checkAll"
-            :clearAll="clearAll"
+            @checkAll="checkAll"
+            @clearAll="clearAll"
           ></TodoFooter>
         </div>
       </div>
