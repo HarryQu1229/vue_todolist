@@ -3,9 +3,17 @@
     <div id="root">
       <div class="todo-container">
         <div class="todo-wrap">
-          <TodoHeader></TodoHeader>
-          <TodoList></TodoList>
-          <TodoFooter></TodoFooter>
+          <TodoHeader :receive="receive"></TodoHeader>
+          <TodoList
+            :todos="todos"
+            :checkTodo="checkTodo"
+            :deleteTodo="deleteTodo"
+          ></TodoList>
+          <TodoFooter
+            :todos="todos"
+            :checkAll="checkAll"
+            :clearAll="clearAll"
+          ></TodoFooter>
         </div>
       </div>
     </div>
@@ -23,6 +31,59 @@ export default {
     TodoHeader,
     TodoList,
     TodoFooter,
+  },
+  data() {
+    return {
+      todos: [
+        {
+          id: "1",
+          content: "2",
+          completed: true,
+        },
+        {
+          id: "2",
+          content: "2",
+          completed: false,
+        },
+        {
+          id: "3",
+          content: "2",
+          completed: false,
+        },
+      ],
+    };
+  },
+  methods: {
+    // receiving new Todo from TodoHeader and add it
+    receive(newTodo) {
+      this.todos.unshift(newTodo);
+    },
+    // check or uncheck a Todo by its id
+    checkTodo(id) {
+      this.todos.forEach((todo) => {
+        if (todo.id === id) {
+          todo.completed = !todo.completed;
+        }
+      });
+    },
+    // delete a Todo by its id
+    deleteTodo(id) {
+      this.todos.forEach((todo) => {
+        if (todo.id === id) {
+          this.todos.shift(todo);
+        }
+      });
+    },
+    // check or discheck all Todos
+    checkAll(allChecked) {
+      this.todos.forEach((todo) => {
+        todo.completed = allChecked;
+      });
+    },
+    // clear all completed Todos
+    clearAll() {
+      this.todos = this.todos.filter((todo) => !todo.completed);
+    },
   },
 };
 </script>

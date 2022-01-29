@@ -1,8 +1,12 @@
 <template>
   <ul class="todo-main">
-    <TodoItem></TodoItem>
-    <TodoItem></TodoItem>
-    <TodoItem></TodoItem>
+    <TodoItem
+      v-for="todo in todos"
+      :key="todo.id"
+      :todo="todo"
+      :checkTodo="checkTodo"
+      :deleteTodo="deleteTodo"
+    />
   </ul>
 </template>
 
@@ -11,6 +15,7 @@ import TodoItem from "./TodoItem.vue";
 export default {
   name: "TodoList",
   components: { TodoItem },
+  props: ["todos", "checkTodo", "deleteTodo"],
 };
 </script>
 

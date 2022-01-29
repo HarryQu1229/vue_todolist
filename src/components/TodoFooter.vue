@@ -1,16 +1,46 @@
 <template>
-  <div class="todo-footer">
+  <div class="todo-footer" v-show="totalNumberOfTodos">
     <label>
-      <input type="checkbox" />
+      <input type="checkbox" v-model="allChecked" />
     </label>
-    <span> <span>Accomplished 0</span> / 2 </span>
-    <button class="btn btn-danger">Clear Todos</button>
+    <span>
+      <span>Completed {{ numberOfCompleted }}</span> /
+      {{ totalNumberOfTodos }}
+    </span>
+    <button class="btn btn-danger" @click="clearAll">Clear All Completed Todos</button>
   </div>
 </template>
 
 <script>
 export default {
   name: "TodoFooter",
+  computed: {
+    // get the number of completed Todos
+    numberOfCompleted() {
+      return this.todos.reduce(
+        (pre, current) => pre + (current.completed ? 1 : 0),
+        0
+      );
+    },
+    // get total number of todos
+    totalNumberOfTodos() {
+      return this.todos.length;
+    },
+    // check whether all boxes are checked
+    allChecked: {
+      get() {
+        return (
+          this.numberOfCompleted === this.totalNumberOfTodos &&
+          this.totalNumberOfTodos > 0
+        );
+      },
+      // check or discheck all box when this total box is checked
+      set(value) {
+        this.checkAll(value);
+      },
+    },
+  },
+  props: ["todos", "checkAll", "clearAll"],
 };
 </script>
 

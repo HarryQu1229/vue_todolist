@@ -3,13 +3,48 @@
     <input
       type="text"
       placeholder="Please enter your todo task and press enter"
+      @keyup.enter="addTodo"
+      v-model="input"
     />
   </div>
 </template>
 
 <script>
+import { nanoid } from "nanoid";
 export default {
   name: "TodoHeader",
+  data() {
+    return {
+      input: "",
+    };
+  },
+  methods: {
+    addTodo(event) {
+      if (this.input.trim() !== "") {
+        //reset to default
+        event.target.placeholder =
+          "Please enter your todo task and press enter";
+        event.target.className = "";
+        // create new object for the new Todo
+        const newTodo = {
+          id: nanoid(),
+          content: this.input,
+          completed: false,
+        };
+
+        // send to App.vue
+        this.receive(newTodo);
+        // clear input box
+        this.input = "";
+      } else {
+        // show the error message
+        event.target.placeholder =
+          "cannot add an empty todo, please write something!";
+        event.target.className = "wrong";
+      }
+    },
+  },
+  props: ["receive"],
 };
 </script>
 
@@ -29,5 +64,11 @@ export default {
   border-color: rgba(82, 168, 236, 0.8);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
     0 0 8px rgba(82, 168, 236, 0.6);
+}
+
+.todo-header .wrong:focus {
+  border-color: rgba(195, 50, 37, 0.8) !important;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(116, 51, 25, 0.6) !important;
 }
 </style>
