@@ -34,24 +34,16 @@ export default {
   },
   data() {
     return {
-      todos: [
-        {
-          id: "1",
-          content: "2",
-          completed: true,
-        },
-        {
-          id: "2",
-          content: "2",
-          completed: false,
-        },
-        {
-          id: "3",
-          content: "2",
-          completed: false,
-        },
-      ],
+      todos: JSON.parse(localStorage.getItem("todos")) || [],
     };
+  },
+  watch: {
+    todos: {
+      deep: true,
+      handler(newValue) {
+        localStorage.setItem("todos", JSON.stringify(newValue));
+      },
+    },
   },
   methods: {
     // receiving new Todo from TodoHeader and add it
