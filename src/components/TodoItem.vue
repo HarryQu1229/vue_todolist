@@ -1,32 +1,34 @@
 <template>
-  <li @dblclick="editHandle(todo.id)">
-    <label>
-      <input
-        type="checkbox"
-        :checked="todo.completed"
-        @change="changeHandle(todo.id)"
-      />
-      <span v-show="!todo.isEdit">{{ todo.content }}</span>
-      <input
-        type="text"
-        v-show="todo.isEdit"
-        :value="todo.content"
-        @blur="blurHandle(todo.id, $event)"
-        @keyup.enter="$event.target.blur()"
-        ref="updateTextBox"
-      />
-    </label>
-    <button class="btn btn-danger" @click="deleteHandle(todo.id)">
-      Delete
-    </button>
-    <button
-      v-show="!todo.isEdit"
-      class="btn btn-edit"
-      @click="editHandle(todo.id)"
-    >
-      Edit
-    </button>
-  </li>
+  <transition name="todo" appear>
+    <li @dblclick="editHandle(todo.id)">
+      <label>
+        <input
+          type="checkbox"
+          :checked="todo.completed"
+          @change="changeHandle(todo.id)"
+        />
+        <span v-show="!todo.isEdit">{{ todo.content }}</span>
+        <input
+          type="text"
+          v-show="todo.isEdit"
+          :value="todo.content"
+          @blur="blurHandle(todo.id, $event)"
+          @keyup.enter="$event.target.blur()"
+          ref="updateTextBox"
+        />
+      </label>
+      <button class="btn btn-danger" @click="deleteHandle(todo.id)">
+        Delete
+      </button>
+      <button
+        v-show="!todo.isEdit"
+        class="btn btn-edit"
+        @click="editHandle(todo.id)"
+      >
+        Edit
+      </button>
+    </li></transition
+  >
 </template>
 
 <script>
@@ -112,5 +114,22 @@ li:hover .btn-danger {
 
 li:hover .btn-edit {
   display: block;
+}
+
+.todo-enter-active {
+  animation: todoAnimate 0.2s linear;
+}
+
+.todo-leave-active {
+  animation: todoAnimate 0.09s linear reverse;
+}
+
+@keyframes todoAnimate {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0px);
+  }
 }
 </style>
