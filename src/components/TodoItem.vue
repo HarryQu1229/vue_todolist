@@ -1,15 +1,30 @@
 <template>
-  <li>
+  <li @dblclick="editHandle(todo.id)">
     <label>
       <input
         type="checkbox"
         :checked="todo.completed"
         @change="changeHandle(todo.id)"
       />
-      <span>{{ todo.content }}</span>
+      <span v-show="!todo.isEdit">{{ todo.content }}</span>
+      <input
+        type="text"
+        v-show="todo.isEdit"
+        :value="todo.content"
+        @blur="blurHandle(todo.id, $event)"
+        @keyup.enter="$event.target.blur()"
+        ref="updateTextBox"
+      />
     </label>
     <button class="btn btn-danger" @click="deleteHandle(todo.id)">
       Delete
+    </button>
+    <button
+      v-show="!todo.isEdit"
+      class="btn btn-edit"
+      @click="editHandle(todo.id)"
+    >
+      Edit
     </button>
   </li>
 </template>
@@ -17,16 +32,32 @@
 <script>
 export default {
   name: "TodoItem",
-  props: ["todo", "checkTodo", "deleteTodo"],
+  props: ["todo"],
   methods: {
     // call the checkTodo method from App.vue to update Todo
     changeHandle(id) {
-      this.checkTodo(id);
+      this.$bus.$emit("checkTodo", id);
     },
     // call the deleteTodo method from App.vue to deleteTodo
     deleteHandle(id) {
       if (confirm("Are you sure you want to delete?")) {
-        this.deleteTodo(id);
+        this.$bus.$emit("deleteTodo", id);
+      }
+    },
+    // edit existing Todo
+    editHandle(id) {
+      this.$bus.$emit("editTodo", id);
+      this.$nextTick(function () {
+        this.$refs.updateTextBox.select();
+      });
+    },
+    // update the Todo content after edit
+    blurHandle(id, event) {
+      if (!event.target.value.trim()) {
+        event.target.placeholder = "cannot be empty!";
+        event.target.select();
+      } else {
+        this.$bus.$emit("updateTodo", id, event.target.value.trim());
       }
     },
   },
@@ -76,6 +107,10 @@ li:hover {
 }
 
 li:hover .btn-danger {
+  display: block;
+}
+
+li:hover .btn-edit {
   display: block;
 }
 </style>

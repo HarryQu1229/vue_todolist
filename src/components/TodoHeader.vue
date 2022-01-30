@@ -28,8 +28,9 @@ export default {
         // create new object for the new Todo
         const newTodo = {
           id: nanoid(),
-          content: this.input,
+          content: this.input.trim(),
           completed: false,
+          isEdit: false,
         };
 
         // send to App.vue
