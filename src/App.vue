@@ -56,11 +56,7 @@ export default {
     },
     // delete a Todo by its id
     deleteTodo(id) {
-      this.todos.forEach((todo) => {
-        if (todo.id === id) {
-          this.todos.shift(todo);
-        }
-      });
+      this.todos = this.todos.filter((todo) => !(todo.id === id));
     },
     // check or discheck all Todos
     checkAll(allChecked) {
